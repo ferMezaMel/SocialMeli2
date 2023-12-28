@@ -55,10 +55,25 @@ class ProductServiceImplTest {
 
     @Test
     @DisplayName("T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009): " +
-            "El tipo de ordenamiento existe entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
-    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoTest(){
+            "El tipo de ordenamiento 'date_asc' existe entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
+    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoDateAscTest(){
         // Arrange
         String order = "date_asc";
+        User user = getUserFollwingSellersTest();
+        List<User> sellers = user.getFollowed();
+        Integer id = user.getUser_id();
+        // Act
+        when(userService.findFollowsByIdProductService(Mockito.anyInt())).thenReturn(sellers);
+        // Assert
+        assertDoesNotThrow(() -> productService.getAllPostsFollowsLastTwoWeeks(id, order));
+    }
+
+    @Test
+    @DisplayName("T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009): " +
+            "El tipo de ordenamiento existe 'date_desc' entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
+    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoDateDescTest(){
+        // Arrange
+        String order = "date_desc";
         User user = getUserFollwingSellersTest();
         List<User> sellers = user.getFollowed();
         Integer id = user.getUser_id();
