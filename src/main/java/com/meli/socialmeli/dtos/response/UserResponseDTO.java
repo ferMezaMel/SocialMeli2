@@ -1,14 +1,14 @@
 package com.meli.socialmeli.dtos.response;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 @NoArgsConstructor
