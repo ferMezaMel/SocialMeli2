@@ -1,9 +1,9 @@
 # SOCIAL MELI
 
-Este proyecto reune 9 historias de usuario para el desarrollo inicial (Sprint - 1) del API de SocialMeli. Mercado Libre tiene como objetivo empezar a implementar una serie de herramientas que permitan a los compradores y vendedores tener una experiencia totalmente innovadora, en donde el lazo que los una sea mucho más cercano.
-“SocialMeli” es un aplicativo donde los compradores van a poder seguir a sus vendedores favoritos y enterarse de todas las novedades que los mismos posteen.
+Este proyecto reune 9 historias de usuario para el desarrollo inicial (Sprint - 1) del API de SocialMeli y sus respectivos test unitarios (Sprint - 2). Mercado Libre tiene como objetivo empezar a implementar una serie de herramientas que permitan a los compradores y vendedores tener una experiencia totalmente innovadora, en donde el lazo que los una sea mucho más cercano.
+“SocialMeli” es un aplicativo donde los compradores van a poder seguir a sus vendedores favoritos y enterarse de todas las novedades que los mismos posteen (Sprint - 1). Dado esto y a que MeLi tiene unos estándares de calidad muy altos con respecto a los productos de software que utiliza, estableció una serie de validaciones y diferentes test unitarios que aseguren el correcto funcionamiento (Spring - 2).
 
-
+## Sprint 1
 ## Instalación
 
 1. Ubicarse en la dirección donde se encuentra alojado el proyecto o abrir el proyecto desde su IDE favorito.
