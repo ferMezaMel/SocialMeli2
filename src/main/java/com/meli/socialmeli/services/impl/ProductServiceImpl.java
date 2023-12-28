@@ -60,7 +60,7 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public PostsFromFollowsDTO getAllPostsFollowsLastTwoWeeks(Integer userId, String order) {
         if (order != null && !List.of("date_asc", "date_desc").contains(order))
-            throw new BadRequestException("El valor del query parameter 'order' es incorrecto.");
+            throw new BadRequestException("El valor " + order + " del query parameter 'order' es incorrecto.");
         Stream<PostNoPromoDTO> temp = this.getAllPostFollowsLastTwoWeeks(userId).stream();
 
         Comparator<PostNoPromoDTO> comparator = Comparator.comparing(PostNoPromoDTO::getDate);
