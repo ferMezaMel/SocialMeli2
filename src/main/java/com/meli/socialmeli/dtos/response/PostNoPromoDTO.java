@@ -1,14 +1,17 @@
 package com.meli.socialmeli.dtos.response;
 
 import com.meli.socialmeli.utilities.CustomLocalDateValidation;
-import jakarta.validation.constraints.*;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import jakarta.validation.Valid;
-
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.DecimalMax;
 
 @Getter
 @NoArgsConstructor
