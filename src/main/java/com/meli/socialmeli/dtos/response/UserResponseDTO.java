@@ -16,10 +16,10 @@ import java.util.List;
 @Getter
 @Setter
 public class UserResponseDTO {
-    @NotNull(message = "El  id no puede estar vacío.")
-    @Min(value= 1, message= "El id debe ser mayor a cero")
+    @NotNull(message = "El  campo 'user_id' no puede estar vacío.")
+    @Min(value= 1, message= "El campo 'user_id' debe ser mayor a cero")
     private Integer user_id;
-    @Size(max=15, message = "La longitud no puede ser mayor a 15")
+    @Size(max=15, message = "La longitud del campo 'user_name' no puede ser mayor a 15")
     private String user_name;
     private List<String> followers;
     private List<String> followed;
