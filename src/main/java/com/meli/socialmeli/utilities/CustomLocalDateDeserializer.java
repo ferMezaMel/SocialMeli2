@@ -4,9 +4,6 @@ import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.meli.socialmeli.exceptions.custom.BadRequestException;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-
 
 import java.io.IOException;
 import java.time.LocalDate;
