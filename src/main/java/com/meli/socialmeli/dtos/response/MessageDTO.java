@@ -2,6 +2,7 @@ package com.meli.socialmeli.dtos.response;
 
 import lombok.*;
 
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
