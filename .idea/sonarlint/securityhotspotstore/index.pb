@@ -1,0 +1,21 @@
+
+9
+	readme.md,2/7/275d783e298228506068436512433d343feb52aa
+x
+Hsrc/test/java/com/meli/socialmeli/controllers/ProductControllerTest.java,b/f/bf24a0c3bd170b2bdcdf6fb70357d11629e951f8
+u
+Esrc/test/java/com/meli/socialmeli/controllers/UserControllerTest.java,c/b/cb4763ea01417148e4a79feeba06547053a5502b
+s
+Csrc/test/java/com/meli/socialmeli/services/UserServiceImplTest.java,8/3/83c924df64c75677d1813b5f00c1e401a3066548
+v
+Fsrc/test/java/com/meli/socialmeli/services/ProductServiceImplTest.java,0/0/003ba5b102de68997c150ac9c3b875cd98977032
+t
+Dsrc/main/java/com/meli/socialmeli/controllers/ProductController.java,3/f/3f3e9440cf8410781c0cdb1ddffe070f0d6a4bed
+q
+Asrc/main/java/com/meli/socialmeli/controllers/UserController.java,5/6/5668cad2ff0eaa3f4aa84388cc566121ede1537b
+]
+-src/test/java/util/UserDTOUtilsGenerator.java,d/3/d3d9c116f8c206d44c8dd0644013ebc133330d7e
+`
+0src/test/java/util/UserEntityUtilsGenerator.java,8/3/83bb9addfd08b1aa93e59ad951e9942e15ec96f8
+q
+Asrc/test/java/com/meli/socialmeli/SocialmeliApplicationTests.java,d/6/d619748120a35e194074f9845f426dc97317e644
