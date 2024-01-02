@@ -180,6 +180,6 @@ class ProductServiceImplTest {
         var obtenido = productService.newPost(post);
 
         //Assert
-        Assertions.assertEquals(devolucion.getMessage(), obtenido.getMessage());
+        Assertions.assertEquals(devolucion, obtenido);
     }
 }
