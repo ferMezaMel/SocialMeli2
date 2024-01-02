@@ -1,11 +1,13 @@
 package com.meli.socialmeli.services;
 
 import com.meli.socialmeli.dtos.request.PostDTO;
+import com.meli.socialmeli.dtos.response.MessageDTO;
 import com.meli.socialmeli.dtos.response.PostNoPromoDTO;
 import com.meli.socialmeli.dtos.response.PostsFromFollowsDTO;
-import com.meli.socialmeli.entities.Post;
+import com.meli.socialmeli.dtos.response.ProductDTO;
 import com.meli.socialmeli.entities.User;
 import com.meli.socialmeli.exceptions.custom.BadRequestException;
+import com.meli.socialmeli.repositories.IUserRepository;
 import com.meli.socialmeli.services.impl.ProductServiceImpl;
 import com.meli.socialmeli.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.*;
@@ -15,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import util.UserEntityUtilsGenerator;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -31,6 +33,8 @@ class ProductServiceImplTest {
 
     @Mock
     UserServiceImpl userService;
+    @Mock
+    IUserRepository userRepository;
 
     @InjectMocks
     ProductServiceImpl productService;
@@ -52,13 +56,27 @@ class ProductServiceImplTest {
         localDateNowMock.close();
     }
 
+    @Test
+    @DisplayName("T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009): " +
+            "El tipo de ordenamiento 'date_asc' existe entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
+    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoDateAscTest(){
+        // Arrange
+        String order = "date_asc";
+        User user = getUserFollwingSellersTest();
+        List<User> sellers = user.getFollowed();
+        Integer id = user.getUser_id();
+        // Act
+        when(userService.findFollowsByIdProductService(Mockito.anyInt())).thenReturn(sellers);
+        // Assert
+        assertDoesNotThrow(() -> productService.getAllPostsFollowsLastTwoWeeks(id, order));
+    }
 
     @Test
     @DisplayName("T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009): " +
-            "El tipo de ordenamiento existe entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
-    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoTest(){
+            "El tipo de ordenamiento existe 'date_desc' entonces retorna un PostsFromFollowsDTO sin lanzar excepción.")
+    void getAllPostsFollowsLastTwoWeeksOrdenamientoValidoDateDescTest(){
         // Arrange
-        String order = "date_asc";
+        String order = "date_desc";
         User user = getUserFollwingSellersTest();
         List<User> sellers = user.getFollowed();
         Integer id = user.getUser_id();
@@ -141,5 +159,27 @@ class ProductServiceImplTest {
         // Assert
         Assertions.assertTrue(actual.containsAll(expected));
         Assertions.assertFalse(actual.contains(notExpected));
+    }
+
+    @Test
+    @DisplayName("T-0009: Verificar la corecta creación del producto. (US-0005)")
+
+    void newPostTest (){
+
+        //Arrange
+        String fechaString = "2022-01-22"; // Formato: "yyyy-MM-dd"
+        LocalDate fecha = LocalDate.parse(fechaString);
+        Integer userId = 3;
+        User user = getNewPostAdd();
+        ProductDTO newProduct = new ProductDTO(1, "Silla", "Mueble", "MSI", "Rojo", "Nuevo" );
+        PostDTO post = new PostDTO(userId, fecha, newProduct, 1, 2000.0);
+        MessageDTO devolucion = new MessageDTO("The User " + userId +  " has created new post.");
+
+        //Act
+        when(userRepository.finById(userId)).thenReturn(user);
+        var obtenido = productService.newPost(post);
+
+        //Assert
+        Assertions.assertEquals(devolucion, obtenido);
     }
 }

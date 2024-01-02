@@ -39,7 +39,6 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.ArrayList;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -350,5 +349,4 @@ class UserServiceImplTest {
         });
         assertEquals(expectedMessage, e.getMessage());
     }
-
 }
