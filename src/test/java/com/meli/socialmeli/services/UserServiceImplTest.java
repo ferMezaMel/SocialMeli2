@@ -349,7 +349,4 @@ class UserServiceImplTest {
         });
         assertEquals(expectedMessage, e.getMessage());
     }
-
-
-
 }

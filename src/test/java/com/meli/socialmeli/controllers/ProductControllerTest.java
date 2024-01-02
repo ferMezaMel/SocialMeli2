@@ -17,15 +17,4 @@ class ProductControllerTest {
     @InjectMocks
     ProductController productController;
 
-    @Test
-    @DisplayName("T-0009: Verificar la corecta creación del producto. (US-0005)")
-
-    void newPostTest (){
-
-        //Arrange
-        int userId = 1100;
-        //Act
-
-        //Assert
-    }
 }
