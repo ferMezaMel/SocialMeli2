@@ -41,3 +41,6 @@ q
 Asrc/main/java/com/meli/socialmeli/controllers/UserController.java,5/6/5668cad2ff0eaa3f4aa84388cc566121ede1537b
 s
 Csrc/test/java/com/meli/socialmeli/services/UserServiceImplTest.java,8/3/83c924df64c75677d1813b5f00c1e401a3066548
+:
+
+.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
