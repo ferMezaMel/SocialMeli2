@@ -6,6 +6,7 @@ import com.meli.socialmeli.dtos.response.PostNoPromoDTO;
 import com.meli.socialmeli.dtos.response.PostsFromFollowsDTO;
 import com.meli.socialmeli.dtos.response.ProductDTO;
 import com.meli.socialmeli.entities.User;
+import com.meli.socialmeli.exceptions.custom.BadRequestException;
 import com.meli.socialmeli.exceptions.custom.NotFoundException;
 import com.meli.socialmeli.repositories.IUserRepository;
 import com.meli.socialmeli.services.IProductService;
@@ -21,6 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static com.meli.socialmeli.utilities.Mappers.mapPostUserAndProductPromoNoPromoDTO;
+
 @Service
 public class ProductServiceImpl implements IProductService {
     private final IUserRepository userRepository ;
@@ -33,32 +36,18 @@ public class ProductServiceImpl implements IProductService {
 
     private List<PostNoPromoDTO> getAllPostFollowsLastTwoWeeks(Integer userId) {
         List<User> follows = userService.findFollowsByIdProductService(userId);
-        if (follows == null || follows.isEmpty()) throw new NotFoundException("The user with id: " + userId + " does not follow anyone");
+        if (follows == null || follows.isEmpty()) throw new NotFoundException("El usuario con id: " + userId + " no sigue a nadie");
 
         List<PostNoPromoDTO> postNoPromoDTOList = new ArrayList<>();
 
         follows.forEach(f -> f.getPosts().stream()
                 .filter(post -> !post.isHas_promo())
                 .filter(post -> post.getDate().isAfter(LocalDate.now().minusWeeks(2)))
-                .map(post -> new PostNoPromoDTO(
-                        f.getUser_id(),
-                        post.getPost_id(),
-                        post.getDate().toString(),
-                        new ProductDTO(
-                                post.getProduct().getProduct_id(),
-                                post.getProduct().getProduct_name(),
-                                post.getProduct().getType(),
-                                post.getProduct().getBrand(),
-                                post.getProduct().getColor(),
-                                post.getProduct().getNotes()
-                        ),
-                        post.getCategory(),
-                        post.getPrice()
-                ))
+                .map(post -> mapPostUserAndProductPromoNoPromoDTO(post,f))
                 .forEach(postNoPromoDTOList::add));
         if(postNoPromoDTOList.isEmpty()){
-            throw new NotFoundException("The sellers of the user with id: " + userId +
-                    " do not have any publications in the last two weeks");
+            throw new NotFoundException("Los vendedores que sigue el usuario con id: " + userId +
+                    " no tienen ninguna publicación en las últimas dos semanas.");
         }
         return postNoPromoDTOList;
     }
@@ -70,15 +59,17 @@ public class ProductServiceImpl implements IProductService {
      */
     @Override
     public PostsFromFollowsDTO getAllPostsFollowsLastTwoWeeks(Integer userId, String order) {
+        if (order != null && !List.of("date_asc", "date_desc").contains(order))
+            throw new BadRequestException("El valor " + order + " del query parameter 'order' es incorrecto.");
         Stream<PostNoPromoDTO> temp = this.getAllPostFollowsLastTwoWeeks(userId).stream();
 
         Comparator<PostNoPromoDTO> comparator = Comparator.comparing(PostNoPromoDTO::getDate);
 
         List<PostNoPromoDTO> posts;
 
-        if (order.equals("date_asc")) {
+        if (order != null && order.equals("date_asc")) {
             posts = temp.sorted(comparator).toList();
-        } else if (order.equals("date_desc")) {
+        } else if (order != null && order.equals("date_desc")) {
             posts = temp.sorted(comparator.reversed()).toList();
         } else {
             posts = temp.toList();

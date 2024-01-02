@@ -37,7 +37,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserFollowersDTO findFollowersById(int userId, String order) {
         Optional<User> userFound = Optional.ofNullable(userRepository.finById(userId));
-        if (userFound.isEmpty()) throw new NotFoundException("There is no user with the id: " + userId);
+        if (userFound.isEmpty()) throw new NotFoundException("No existe usuario con el id: " + userId);
+
+        if (!List.of("name_asc","name_desc").contains(order))
+            throw  new BadRequestException("Debe indicar un parámetro de orden válido: 'name_asc' o 'name_desc'");
 
         List<UserInfoDTO> followers = userFound.get().getFollowers()
                                                      .stream()
@@ -52,7 +55,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<User> findFollowsByIdProductService(int id) {
         Optional<User> user = Optional.ofNullable(userRepository.finById(id));
-        if (user.isEmpty()) throw new NotFoundException("There is no user with the id: " + id);
+        if (user.isEmpty()) throw new NotFoundException("No existe usuario con id: " + id);
 
         return userRepository.getUserFollowed(user.get());
     }
@@ -92,7 +95,7 @@ public class UserServiceImpl implements IUserService {
                 .findFirst()
                 .orElse(null);
         if(followerUser == null){
-            throw new BadRequestException("User not found");
+            throw new BadRequestException("Usuario seguidor no encontrado");
         }
 
         User followedUser = userRepository.findAll()
@@ -101,21 +104,21 @@ public class UserServiceImpl implements IUserService {
                 .findFirst()
                 .orElse(null);
         if(followedUser == null){
-            throw new BadRequestException("User not found");
+            throw new BadRequestException("Usuario a seguir no encontrado");
         }
 
         if(followedUser.getFollowers().contains(followerUser)){
-            throw new BadRequestException("User already followed");
+            throw new BadRequestException("El usuario ya sigue al usuario deseado");
         }
 
         if(followedUser.getPosts().isEmpty() || userId == userIdToFollow){
-            throw new BadRequestException("Invalid User to follow");
+            throw new BadRequestException("Usuario inválido para seguir");
         }
 
         followerUser.addFollowed(followedUser);
         followedUser.addFollower(followerUser);
 
-        return new MessageDTO("Followed added");
+        return new MessageDTO("Usuario seguido agregado");
 
     }
 
@@ -126,7 +129,7 @@ public class UserServiceImpl implements IUserService {
     public FollowersCountDTO getFollowersCount(int userId) {
         User user = userRepository.finById(userId);
         if(user == null){
-            throw new NotFoundException("Invalid user");
+            throw new NotFoundException("Usuario no encontrado");
         }
         FollowersCountDTO followersCountDto = new FollowersCountDTO();
         followersCountDto.setUser_id(user.getUser_id());
@@ -141,7 +144,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserFollowedDTO findFollowedById(int userId, String order) {
         Optional<User> userFound = Optional.ofNullable(userRepository.finById(userId));
-        if (userFound.isEmpty()) throw new NotFoundException("There is no user with the id: " + userId);
+        if (userFound.isEmpty()) throw new NotFoundException("No existe usuario con el id: " + userId);
+
+        if (!List.of("name_asc","name_desc").contains(order))
+            throw  new BadRequestException("Debe indicar un parámetro de orden válido: 'name_asc' o 'name_desc'");
 
         List<UserInfoDTO> followed = userFound.get().getFollowed()
                                                     .stream()
@@ -161,14 +167,14 @@ public class UserServiceImpl implements IUserService {
         User userToUnfollow = this.userRepository.finById(userIdToUnfollow);
 
         if (user == null || userToUnfollow == null) {
-            throw new NotFoundException("User not found");
+            throw new NotFoundException("Usuario no encontrado");
         }
 
         boolean removedFromFollowed = user.getFollowed().remove(userToUnfollow);
         boolean removedFromFollowers = userToUnfollow.getFollowers().remove(user);
 
         if (!removedFromFollowed || !removedFromFollowers) {
-            throw new NotFoundException("Followed user not found");
+            throw new NotFoundException("Usuario seguido no encontrado");
         }
 
         return new UserUnfollowDTO(userId, userIdToUnfollow);
