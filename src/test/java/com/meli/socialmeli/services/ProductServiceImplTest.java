@@ -1,11 +1,19 @@
 package com.meli.socialmeli.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.meli.socialmeli.dtos.request.PostDTO;
+import com.meli.socialmeli.dtos.response.MessageDTO;
 import com.meli.socialmeli.dtos.response.PostNoPromoDTO;
 import com.meli.socialmeli.dtos.response.PostsFromFollowsDTO;
+import com.meli.socialmeli.dtos.response.ProductDTO;
 import com.meli.socialmeli.entities.Post;
 import com.meli.socialmeli.entities.User;
 import com.meli.socialmeli.exceptions.custom.BadRequestException;
+import com.meli.socialmeli.exceptions.custom.DataSourceException;
+import com.meli.socialmeli.repositories.IUserRepository;
 import com.meli.socialmeli.services.impl.ProductServiceImpl;
 import com.meli.socialmeli.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.*;
@@ -15,8 +23,11 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.util.ResourceUtils;
 import util.UserEntityUtilsGenerator;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -31,6 +42,8 @@ class ProductServiceImplTest {
 
     @Mock
     UserServiceImpl userService;
+    @Mock
+    IUserRepository userRepository;
 
     @InjectMocks
     ProductServiceImpl productService;
@@ -51,7 +64,6 @@ class ProductServiceImplTest {
     public static void close() {
         localDateNowMock.close();
     }
-
 
     @Test
     @DisplayName("T-0005: Verificar que el tipo de ordenamiento por fecha exista (US-0009): " +
@@ -156,5 +168,34 @@ class ProductServiceImplTest {
         // Assert
         Assertions.assertTrue(actual.containsAll(expected));
         Assertions.assertFalse(actual.contains(notExpected));
+    }
+
+    @Test
+    @DisplayName("T-0009: Verificar la corecta creación del producto. (US-0005)")
+
+    void newPostTest (){
+
+        //Arrange
+        String fechaString = "2022-01-22"; // Formato: "yyyy-MM-dd"
+        LocalDate fecha = LocalDate.parse(fechaString);
+        Integer userId = 3;
+        User user = getNewPostAdd();
+
+        ProductDTO newProduct = new ProductDTO(1, "Silla", "Mueble", "MSI", "Rojo", "Nuevo" );
+        PostDTO post = new PostDTO(userId, fecha, newProduct, 1, 2000.0);
+
+        MessageDTO devolucion = new MessageDTO("The User " + userId +  " has created new post.");
+
+        //Act
+        when(userRepository.finById(userId)).thenReturn(user);
+        //when(productService.newPost(post)).thenReturn(devolucion);
+
+        var obtenido = productService.newPost(post);
+
+        //Assert
+
+        Assertions.assertEquals(devolucion, obtenido);
+
+
     }
 }

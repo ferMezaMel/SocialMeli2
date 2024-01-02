@@ -59,8 +59,4 @@ class UserControllerTest {
         Assertions.assertEquals(((FollowersCountDTO)expected.getBody()).getUser_name(), ((FollowersCountDTO)result.getBody()).getUser_name());
         Assertions.assertEquals(((FollowersCountDTO)expected.getBody()).getFollowers_count(), ((FollowersCountDTO)result.getBody()).getFollowers_count());
     }
-
-    @Test
-    @DisplayName("Verificar la corecta creación del producto. (US-0005)")
-    void
 }

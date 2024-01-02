@@ -213,4 +213,12 @@ public class UserEntityUtilsGenerator {
 
         return new PostsFromFollowsDTO(user.getUser_id(), postsDescSorted);
     }
+
+    public static User getNewPostAdd(){
+
+        User user = new User(3, "usurioPost1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        return user;
+
+    }
 }
