@@ -4,7 +4,6 @@ import com.meli.socialmeli.dtos.request.PostDTO;
 import com.meli.socialmeli.dtos.response.MessageDTO;
 import com.meli.socialmeli.dtos.response.PostNoPromoDTO;
 import com.meli.socialmeli.dtos.response.PostsFromFollowsDTO;
-import com.meli.socialmeli.dtos.response.ProductDTO;
 import com.meli.socialmeli.entities.User;
 import com.meli.socialmeli.exceptions.custom.BadRequestException;
 import com.meli.socialmeli.exceptions.custom.NotFoundException;
